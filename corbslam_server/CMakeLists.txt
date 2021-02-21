@@ -50,20 +50,31 @@ if(NOT OpenCV_FOUND)
         if(NOT OpenCV_FOUND)
                 message(FATAL_ERROR "OpenCV > 3 not found.")
         endif()
-else()
-        message(STATUS "OpenCV ${OpenCV_VERSION} FOUND")
 endif()
+message(STATUS "OpenCV ${OpenCV_VERSION} FOUND")
 
 find_package(Pangolin REQUIRED)
 #find_package(corbslam_client REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost 1.71.0 COMPONENTS serialization system filesystem REQUIRED)
+if (NOT Boost_FOUND)
+        find_package(Boost COMPONENTS serialization system filesystem REQUIRED)
+        if (NOT Boost_FOUND)
+                message(FATAL_ERROR "Boost not found.")
+        endif()
+endif()
+message(STATUS "Boost ${Boost_VERSION} FOUND")
 
 SET( EIGEN3_INCLUDE_DIR "/usr/local/include/eigen3" )
 IF( NOT EIGEN3_INCLUDE_DIR )
-    MESSAGE( FATAL_ERROR "Eigen3 Include Dir not found")
+        SET( EIGEN3_INCLUDE_DIR "/usr/include/eigen3" )
+        IF( NOT EIGEN3_INCLUDE_DIR )
+                MESSAGE( FATAL_ERROR "Eigen3 Include Dir not found")
+        endif()
 ENDIF()
+message(STATUS "Eigen FOUND")
+
 
 
 ## Generate messages in the 'msg' folder
@@ -128,11 +139,6 @@ set(${PROJECT_NAME}_SOURCES
         ${PROJECT_SOURCE_DIR}/src/GlobalOptimize.cpp
         )
 
-#set(corbslam_server_ODB_HEADERS)
-
-#message(STATUS ${PROJECT_SOURCE_DIR})
-
-#odb_compile(corbslam_server_SOURCES FILES ${corbslam_server_ODB_HEADERS} DB pgsql GENERATE_QUERY GENERATE_SESSION)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
@@ -140,13 +146,11 @@ message(STATUS "CORBSLAM_CLIENT LIBS ${CMAKE_SOURCE_DIR}/CORB-SLAM/corbslam_clie
 
 add_executable(${PROJECT_NAME}
         ${${PROJECT_NAME}_SOURCES}
-#        ${${PROJECT_NAME}_ODB_HEADERS}
 )
 
 add_dependencies(${PROJECT_NAME} corbslam_client)
 
 target_link_libraries(${PROJECT_NAME}
-#        ${ODB_LIBRARIES}
         ${catkin_LIBRARIES}
         ${Boost_LIBRARIES}
         ${OpenCV_LIBS}

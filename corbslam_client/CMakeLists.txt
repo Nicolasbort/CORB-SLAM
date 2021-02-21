@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.0.2)
-#project(ORB_SLAM2)
 project(corbslam_client)
 
 IF (NOT CMAKE_BUILD_TYPE)
@@ -27,11 +26,6 @@ else ()
     message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++14 support. Please use a different C++ compiler.")
 endif ()
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-
-# LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
 find_package(catkin REQUIRED COMPONENTS
         roscpp
@@ -41,29 +35,37 @@ find_package(catkin REQUIRED COMPONENTS
         message_generation
 )
 
-
+# OpenCV
 find_package(OpenCV 4 QUIET)
 if(NOT OpenCV_FOUND)
         find_package(OpenCV 3 QUIET)
         if(NOT OpenCV_FOUND)
                 message(FATAL_ERROR "OpenCV > 3 not found.")
         endif()
-else()
-        message(STATUS "OpenCV ${OpenCV_VERSION} FOUND")
 endif()
-
-message(STATUS "OpenCV include dir ${OpenCV_INCLUDE_DIRS}")
-message(STATUS "OpenCV libs ${OpenCV_LIBS}")
+message(STATUS "OpenCV ${OpenCV_VERSION} FOUND")
 
 find_package(Pangolin REQUIRED)
 
+# Boost
+find_package(Boost 1.71.0 COMPONENTS serialization system filesystem REQUIRED)
+if (NOT Boost_FOUND)
+        find_package(Boost COMPONENTS serialization system filesystem REQUIRED)
+        if (NOT Boost_FOUND)
+                message(FATAL_ERROR "Boost not found.")
+        endif()
+endif()
+message(STATUS "Boost ${Boost_VERSION} FOUND")
+
+# Eigen
 SET( EIGEN3_INCLUDE_DIR "/usr/local/include/eigen3" )
 IF( NOT EIGEN3_INCLUDE_DIR )
-    MESSAGE( FATAL_ERROR "Eigen3 Include Dir not found")
+        SET( EIGEN3_INCLUDE_DIR "/usr/include/eigen3" )
+        IF( NOT EIGEN3_INCLUDE_DIR )
+                MESSAGE( FATAL_ERROR "Eigen3 Include Dir not found")
+        endif()
 ENDIF()
-
-### find and configure Boost
-find_package(Boost 1.71.0 COMPONENTS serialization system filesystem REQUIRED)
+message(STATUS "Eigen FOUND")
 
 
 ## Generate messages in the 'msg' folder
@@ -173,7 +175,7 @@ target_link_libraries(${PROJECT_NAME}
 
 # target_link_libraries(corbslam_client_stereo_kitti
 #         ${catkin_LIBRARIES}
-#         ${OpenCV_LIBS}
+#         ${OpenCV_LIBS}f
 #         ${PROJECT_NAME})
 
 #add_executable(orbslam_client_node_stereo_euroc
