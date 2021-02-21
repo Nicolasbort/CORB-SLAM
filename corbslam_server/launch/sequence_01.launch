@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="vocabulary_path" default="$(find corbslam_client)/Vocabulary/ORBvoc.txt"/>
+    <arg name="camera_file_path" default="$(find corbslam_client)/Examples/Monocular/KITTI00-02.yaml"/>
+    <arg name="sequence_path" default="$(env HOME)/sequence_01"/>
+
+    <!-- Server Node -->
+    <node pkg="corbslam_server" type="corbslam_server" name="corbslam_server" args="$(arg vocabulary_path) $(arg camera_file_path)" required="true"/>
+
+    <!-- Client Nodes -->
+    <node pkg="corbslam_client" type="corbslam_client_mono_kitti" name="corbslam_client" args="$(arg vocabulary_path) $(arg camera_file_path) $(arg sequence_path)" />
+        
+</launch>
