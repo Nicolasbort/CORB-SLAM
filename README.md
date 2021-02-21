@@ -1,3 +1,12 @@
+# UPDATE
+
+## Tested
+  * Ubuntu 20.04
+  * ROS Noetic
+  * ORBSLAM2 1.0.0
+  * boost 1.71
+  * [Eigen 3.2.10](https://gitlab.com/libeigen/eigen/-/releases/3.2.10)
+
 
 # CORB-SLAM
 
