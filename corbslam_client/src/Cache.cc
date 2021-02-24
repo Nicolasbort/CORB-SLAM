@@ -189,13 +189,18 @@ namespace ORB_SLAM2 {
 
     MapPoint *Cache::getMapPointById(long unsigned int pId) {
 
-        if (pId <= 0) return nullptr;
+        cout << "==> Cache::getMapPointById called\n";
+        if (pId <= 0) {
+            cout << "==> pId <= 0. Returning nullptr\n";
+            return nullptr;
+        }
 
         MapPoint *pMP = nullptr;
         {
             //unique_lock<mutex> lock(mMutexMPToMPmap);
             if (lMPToMPmap.find(pId) != lMPToMPmap.end()) {
                 unique_lock<mutex> lock(mMutexMPToMPmap);
+                cout << "==> pId found.\n";
                 pMP = lMPToMPmap[pId];
             }
         }

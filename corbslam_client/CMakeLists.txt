@@ -31,6 +31,8 @@ find_package(catkin REQUIRED COMPONENTS
         roscpp
         rospy
         std_msgs
+        cv_bridge
+        image_transport
         tf
         message_generation
 )
@@ -186,13 +188,13 @@ target_link_libraries(${PROJECT_NAME}
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular)
 
-add_executable(corbslam_client_mono_tum Examples/Monocular/mono_tum.cc)
+# add_executable(corbslam_client_mono_tum Examples/Monocular/mono_tum.cc)
 
-target_link_libraries(corbslam_client_mono_tum
-        ${PROJECT_NAME}
-        ${OpenCV_LIBS}
-        ${catkin_LIBRARIES}
-)
+# target_link_libraries(corbslam_client_mono_tum
+#         ${PROJECT_NAME}
+#         ${OpenCV_LIBS}
+#         ${catkin_LIBRARIES}
+# )
 
 
 
@@ -203,3 +205,12 @@ target_link_libraries(corbslam_client_mono_kitti
         ${OpenCV_LIBS}
         ${catkin_LIBRARIES}
 )
+
+
+# add_executable(corbslam_client_mono_ros Examples/Monocular/mono_ros.cc)
+
+# target_link_libraries(corbslam_client_mono_ros
+#         ${PROJECT_NAME}
+#         ${OpenCV_LIBS}
+#         ${catkin_LIBRARIES}
+# )

@@ -771,6 +771,7 @@ void Tracking::CheckReplacedInLastFrame()
         try{
             if(pMP)
             {
+                cout << "==> Tracking::CheckReplacedInLastFrame called\n";
                 MapPoint* pRep = pMP->GetReplaced();
                 if(pRep)
                 {

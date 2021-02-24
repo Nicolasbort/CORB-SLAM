@@ -180,6 +180,7 @@ namespace ORB_SLAM2 {
 
     LightMapPoint *MapPoint::toLightMapPoint()
     {
+        cout << "MapPoint::toLightMapPoint called\n";
         LightMapPoint *pLMP;
         if(this->mnId != 0) {
             pLMP->mnMapPointId = this->mnId;
@@ -195,7 +196,9 @@ namespace ORB_SLAM2 {
         return this->mpCacher;
     }
 
-    void MapPoint::setCache( Cache * pCache ){
+    void MapPoint::setCache( Cache * pCache )
+    {
+        cout << "==> MapPoint::setCache called\n";
 
         this->mpCacher = pCache;
         this->mpRefKF.mpCache = pCache;
@@ -295,6 +298,8 @@ namespace ORB_SLAM2 {
     }
 
     MapPoint *MapPoint::GetReplaced() {
+        cout << "==> MapPoint::GetReplaced called\n";
+
         unique_lock<mutex> lock1(mMutexFeatures);
         //unique_lock<mutex> lock2(mMutexPos);
         return mpReplaced->getMapPoint();
@@ -314,6 +319,7 @@ namespace ORB_SLAM2 {
             mObservations.clear();
             mbBad = true;
             nvisible = mnVisible;
+            cout << "==> mpReplaced = pMP->toLightMapPoint called\n";
             mpReplaced = pMP->toLightMapPoint();
         }
         {

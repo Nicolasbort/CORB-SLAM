@@ -37,12 +37,15 @@ namespace ORB_SLAM2 {
 
     }
     MapPoint* LightMapPoint::getMapPoint() const {
+        cout << "==> LightMapPoint::getMapPoint called\n";
 
-        if( this->mpCache )
+        if( this->mpCache ){
+            cout << "==> this->mpCache not null\n";
             return this->mpCache->getMapPointById( this->mnMapPointId);
-        else
+        }else{
+            cout << "==> this->mpCache is null\n";
             return nullptr;
-
+        }
     }
         
 }
